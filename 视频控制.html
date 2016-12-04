@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>视频控制</title>
+    </head>
+    <body>
+    	<input type="button" value="大屏">
+    	<input type="button" value="中屏">
+    	<input type="button" value="小屏">
+    	<input type="button" value="播放">
+    	<input type="button" value="快进">
+    	<input type="button" value="快退">
+    	<input type="button" value="加速">
+    	<input type="button" value="减速">
+    	<input type="button" value="正常">
+    	<input type="button" value="静音">
+    	<input type="button" value="+">
+    	<input type="button" value="-">
+    	<br>
+    	<br>
+    	<video width="300px">
+            <source src="movies/ZachKing.mp4"></source>
+            <source src="movies/ZachKing.webm"></source>
+            你的浏览器不支持
+        </video>
+        <script>
+        	var btns = document.querySelectorAll('input');
+        	var video = document.querySelector('video');
+        	//大屏显示
+        	btns[0].onclick = function(){
+        		video.style.width = '500px';
+        	}
+        	//中屏显示
+        	btns[1].onclick = function(){
+        		video.style.width = '400px';
+        	}
+        	//小屏显示
+        	btns[2].onclick = function(){
+        		video.style.width = '300px';
+        	}
+        	//播放
+        	btns[3].onclick = function(){
+        		if(video.paused){
+        			video.play();
+        			this.value = '暂停';
+        		}else{
+        			video.pause();
+        			this.value = '播放';
+        		}
+        	}
+        	//快进
+        	btns[4].onclick = function(){
+        		if(video.currentTime + 5 <= video.duration){
+        			video.currentTime += 5;
+        		}else{
+        			video.currentTime = video.duration;
+        			btns[3].value = '播放';
+        		}
+        	}
+        	//快退
+        	btns[5].onclick = function(){
+        		if(video.currentTime - 5 <= 0){
+        			video.currentTime = 0;
+        		}else{
+        			video.currentTime -= 5;
+        		}
+        	}
+        	//加速
+        	btns[6].onclick = function(){
+        		if(video.playbackRate < 2){
+        			video.playbackRate += 0.1;
+        		}
+        		console.log(video.playbackRate);
+        	}
+        	//减速
+        	btns[7].onclick = function(){
+        		if(video.playbackRate > 0.1){
+        			video.playbackRate -= 0.1;
+        		}
+        		console.log(video.playbackRate);
+        	}
+        	//正常
+        	btns[8].onclick = function(){
+        		video.playbackRate = 1;
+        	}
+        	//静音
+        	btns[9].onclick = function(){
+        		if(video.muted){
+        			video.muted = false;
+        			this.value = '静音';
+        		}else{
+        			video.muted = true;
+        			this.value = '开启';
+        		}
+        	}
+        	//音量加
+        	btns[10].onclick = function(){
+        		if(video.volume <= 0.9){
+        			video.volume += 0.1;
+        		}else{
+        			video.volume = 1;
+        		}
+        	}
+        	//音量减
+        	btns[11].onclick = function(){
+        		if(video.volume > 0.1){
+        			video.volume -= 0.1;
+        		}else{
+        			video.volume = 0;
+        		}
+        	}
+        </script>
+    </body>
+</html>

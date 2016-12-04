@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>web存储</title>
+    </head>
+    <body>
+    	<input type="button" value="存储数据">
+    	<input type="button" value="取出存储数据">
+    	<input type="button" value="删除其中一条存储数据">
+    	<input type="button" value="删除所有存储数据">
+    	<input type="button" value="遍历所有存储数据">
+    	<script>
+    		// console.log(window.localStorage);
+    		var btns = document.querySelectorAll('input');
+    		//console.log(btns);
+    		btns[0].onclick = function(){
+    			if(window.localStorage){
+	    			//存储数据两种方式
+	    			localStorage.key1 = 'value1';
+	    			localStorage.setItem ('key2','value2');
+	    		}
+    		}
+
+    		btns[1].onclick = function(){
+    			if(localStorage){
+    				//获取存储数据的两种方式
+    				alert(localStorage.key1);
+    				alert(localStorage.getItem('key2'));
+    			}
+    		}
+
+    		btns[2].onclick = function(){
+    			//根据键名删除存储数据
+    			localStorage.removeItem('key1');
+    		}
+
+    		btns[3].onclick = function(){
+    			//删除所有存储数据
+    			localStorage.clear();
+    		}
+
+    		btns[4].onclick = function(){
+    			//遍历所有存储数据
+    			for(var i = 0;i < localStorage.length;i++){
+    				console.log('索引值为'+i+'键名为：'+localStorage.key(i)+'键值为：'+localStorage.getItem(localStorage.key(i)));
+    			}
+    		}
+    	</script>
+    </body>
+</html>

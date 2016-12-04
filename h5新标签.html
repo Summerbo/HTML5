@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>h5新标签</title>
+        <!--[if lte IE 8]>
+        <script src="../lib/html5shiv/html5shiv.js"></script>
+        <script src="../lib/respond/respond.min.js"></script>
+        <![endif]-->
+        <style>
+            #box1,#box2{
+                height: 100px;
+                width: 100px;
+                background: #f00;
+                border:1px solid red;
+            }
+            #container{
+                width: 400px;
+                height: 400px;
+                background: yellow;
+                position: absolute;
+                right:0;
+                bottom: 0;
+            }
+        </style>
+    </head>
+    <body>
+    	<progress min='5' max='10' value="7"></progress>
+    	<mark>这是测试文字</mark>
+        <input type="range" min='0' max='100' value='50'>
+        <input type="text" list='cities'>
+        <datalist id='cities'>
+            <option value="">北京</option>
+            <option value="">北京</option>
+            <option value="">北京</option>
+        </datalist>
+        <select name="" id="">
+            <optgroup label="一线城市">
+                <option value="">北京</option>
+                <option value="">上海</option>
+            </optgroup>
+                <option value="">武汉</option>
+        </select>
+        <video controls loop preload autoplay class="video">
+            <source src="test.mp4"></source>
+            <source src="test.webm"></source>
+            你的浏览器不支持
+        </video>
+        <audio controls loop preload autoplay muted>
+            <source src="test.mp3"></source>
+            <source src="test.ogg"></source>
+            你的浏览器不支持
+        </audio>
+        <img src="" alt="" data-big-src='test.jpg'>
+        <div id="box1" draggable='true'>box1</div>
+        <div id="box2" draggable='true'>box2</div>
+        <div id="container"></div>
+        <script>
+            var box1 = document.querySelector('#box1'); 
+            var box2 = document.querySelector('#box2'); 
+            box1.ondragstart = function(e){
+                console.log('dragstart');
+                e.dataTransfer.setData('box_id','box1');
+            }
+            box1.ondrag = function(){
+                console.log('我被拖拽了');
+            }
+            box1.ondragend = function(){
+                console.log('dragend');
+            }
+
+            box2.ondragstart = function(e){
+                console.log('dragstart');
+                e.dataTransfer.setData('box_id','box2');
+            }
+            box2.ondrag = function(){
+                console.log('我被拖拽了');
+            }
+            box2.ondragend = function(){
+                console.log('dragend');
+            }
+
+            var container = document.querySelector('#container');
+            container.ondragenter = function(){
+                console.log('有元素被拖到我里面了');
+            }
+            container.ondragleave = function(){
+                console.log('元素离开欧文了');
+            }
+            container.ondragover = function(e){
+                console.log('有个家伙在我上面来来去去的');
+                //禁止默认事件
+                //return false;
+                var evt = e || window.event;
+                if(evt.preveentDefault){
+                    evt.preveentDefault();
+                }else{
+                    evt.returnValue = false;
+                }
+            }
+            container.ondrop = function(e){
+                console.log('有个元素被拖到我上面松手了');
+                var box_id = e.dataTransfer.getData('box_id');
+                var el = document.getElementById(box_id);
+                this.appendChild(el);
+            }
+
+            var img = document.querySelector('img');
+            //console.log(img.dataset['bigSrc']);
+            var video = document.getElementsByClassName('video');
+            
+        </script>
+    </body>
+</html>

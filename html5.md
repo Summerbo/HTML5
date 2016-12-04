@@ -1,5 +1,7 @@
 # HTML5笔记
+
 ## 语义化标签
+
 ### 常用语义化标签
 - header     头部区域
 - nav        导航区域
@@ -36,6 +38,7 @@
 <script src="../lib/respond/respond.min.js"></script>
 <![endif]-->
 ~~~
+
 ## 表单
 
 ### 新增表单元素类型：
@@ -93,9 +96,96 @@ input与change的区别;
 - input的事件源只能是文本框或者文本域，change的事件源就更为广泛
 - input的兼容性没有change好，IE9及以上才支持input事件
 
-### 多媒体
+## 多媒体
+- video 视频，常见属性，width宽度，height高度，controls显示控制面板，poster="对应封面的资源地址"显示封面，loop循环播放，preload预加载，autoplay自动播放，由于版权限制所有没有一种格式是所有浏览器都支持的，所以通常要做到兼容需要由sourse标签来完成：
+~~~
+<video controls loop preload autoplay>
+    <source src="test.mp4"></source>
+    <source src="test.webm"></source>
+    你的浏览器不支持
+</video>
+~~~
+视频的控制中还有一些属性：
+- paused 是否暂停
+- currentTime 视频播放的当前位置（秒数）
+- duration 视频的长度（秒数）
+- playbackRate 视频播放速度或者速率，1表示正常速度
+- muted 是否静音
+- volume 视频音量 0-1范围内
+- play() 播放视频
+- pause() 暂停
 
-## webstorage 
+案例：<a href="视频控制.html">视频控制</a>
+
+- audio 音频，属性和用法和video差不多，只是少了一个poster属性其他的一模一样
+~~~
+<audio controls loop preload autoplay muted>
+    <source src="test.mp3"></source>
+    <source src="test.ogg"></source>
+    你的浏览器不支持
+</audio>
+~~~
+
+## DOM
+
+### 获取元素
+- document.getElementsByClassName('类名') 通过类名获取元素，获得的元素为匹配结果的所有元素即数组
+- document.querySelector('CSS选择器')   通过css选择器来获取元素，获得元素为匹配结果的第一个元素
+- document.querySelectorAll('CSS选择器')   通过css选择器来获取元素，获得元素为匹配结果的所有元素
+
+### 类名操作
+- el.classList.add('类名') 添加某各类
+- el.classList.remove('类名') 删除某个类
+- el.classList.toggle('类名') 切换某个类
+- el.classList.contains('类名') 判断是否存在某个类
+
+案例：<a href="类名操作.html">类名操作</a>
+
+### 自定义属性
+HTML5中允许自定义属性，但属性必须以data-开头，访问时时通过dataset.属性名访问，注意如果data后面有多个以-连接的话获取时要用驼峰式命名法
+~~~
+<img src="test.png" data-big-img="btest.png" alt="">
+<script>
+    var img = document.querySelector('img');
+    img.onclick = function(){
+        this.src = img.dataset.bigImg;
+    }
+</script>
+~~~
+
+## 新增API
+
+### 拖拽
+- draggable  使元素具备可拖拽可将其值设为true，作用于被拖拽元素上
+#### 拖拽事件
+作用于拖拽元素身上的事件：
+- dragstart  拖拽开始触发
+- drag   被拖拽中
+- dragend 拖拽结束即松开鼠标时
+作用于目标元素身上的事件：
+- dragenter 进入目标元素范围内
+- dragleave 拖出目标元素范围内
+- dragover  在目标元素上拖拽时，默认是禁止将拖拽元素放置到其他元素上，如想允许必须阻止默认事件
+- drop  在目标元素上松开鼠标时
+#### 拖拽中数据传递
+拖拽中的数据传递是通过事件对象中dataTransfer.setData()和dataTransfer.getData()来进行的
+
+案例：<a href="h5新标签.html">拖拽</a>
+
+### 地理定位
+地理定位中主要通过Geolocation api来实现
+- navigator.geolocation.getCurrentPositon(successCallback,errorCallback,options)  获取地理位置
+- navigator.geolocation.watchPosition() 重复获取地理位置
+获取地理位置的三个参数分别是获取成功后的回调函数，出错时的回调函数，设置选项
+options中通常有三个值：enableHighAccuracy是否高精度访问通常为false，timeout过期时长单位为毫秒，maximumAge重复获取地理信息的时间间隔只对watchPosition有效
+ps：大陆可能chrome浏览器不能使用定位
+
+案例：<a href="在百度地图显示当前位置.html">定位</a>
+
+### webstorage 
+
+#### localstorage
+本地存储永久有效，除非手动删除，可以在多个窗口之间进行数据共享
 存储数据的两种方式;
 - window.localStorage.键名
 - window.localStorage.setItem(键名,键值)
@@ -103,3 +193,53 @@ input与change的区别;
 - window.localStorage.键名
 - window.localStorage.getItem(键名)
 这里第一种方式是利用对象来操作的，第二种是h5提供的方法
+
+#### sessionstroage
+会话存储：方法和用法同上，关闭窗口即失效，只能统一窗口共享数据
+
+案例：<a href="web存储.html">存储</a>
+
+
+### 网络状态
+- navigator.onLine 判断网络状态
+html5中提供两个事件来判断网络上线或者掉线，两个事件的事件源都是window
+- offline 网络掉线触发
+- online  网络上线触发
+
+### 应用程序缓存
+通常都是在新建一个以.appcache为后缀名的缓存清单，清单内容如下：
+~~~
+CACHE MANIFEST
+
+# 需要缓存的文件
+CACHE:
+images/5_129368073560000000_0475.jpg
+images/5_129626322580000000_7066.jpg
+css.css
+
+# 需要联网访问的资源
+NETWORK:
+js.js
+
+# 文件出错时将出错文件替换为后面资源
+FALLBACK:
+images/  images/logo.png
+~~~
+然后在html文件中添加上要缓存的文件地址，如下：
+~~~
+<!DOCTYPE html>
+<html lang="en" manifest="demo.appcache">
+    <head>
+        <meta charset="utf-8">
+        <title>web应用缓存</title>
+        <link rel="stylesheet" href="css.css">
+        <script src="js.js"></script>
+    </head>
+    <body>
+    	有一种老师叫做别人的老师！<br><br>
+    	<img src="images/5_129368073560000000_0475.jpg" alt="">
+    	<img src="images/5_129626322580000000_7066.jpg" alt="">
+    	<img src="1.jpg" alt="">
+    </body>
+</html>
+~~~
